@@ -8,7 +8,28 @@ class UserRepository {
   UserRepository();
 
   isLogged(){
-    return storage.read("isLogged");
+    return storage.read("isLogged")??false;
+  }
+
+  login(){
+    try{
+      storage.write("isLogged", true);
+    }
+    catch(e){
+      print("ERROR SAVING LOGIN: $e");
+    }
+  }
+
+  logoff(){
+    try{
+      storage.write("isLogged", false);
+    }
+    catch(e){
+      print("ERROR SAVING LOGOFF: $e");
+    }
+  }
+  eraseAllUserInfo(){
+    storage.erase();
   }
 }
 
