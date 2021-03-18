@@ -18,6 +18,7 @@ class SplashController extends GetxController {
   }
 
   chooseNextPage() {
+    // Get.offNamed(Routes.LOGIN);
     Get.offNamed(repository.isLogged() ? Routes.HOME : Routes.LOGIN);
   }
 }

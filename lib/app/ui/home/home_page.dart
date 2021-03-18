@@ -22,10 +22,17 @@ class HomePage extends StatelessWidget {
       body: Container(
         child: GetBuilder<HomeController>(
             builder: (_) {
-              return Center(
-                child: Text("Vídeos em full screen"),
-              );
-            }),
+              return _.list != null ? ListView.builder(
+                itemCount: _.list.files.length,
+                itemBuilder: (BuildContext context, int index){
+                  return ListTile(
+                    leading: Icon(Icons.file_download_done),
+                    title: Text(_.list.files[index].name),
+                  );
+                }
+              ) : Center(child: CircularProgressIndicator(),);
+            },
+        )
       ),
     );
   }

@@ -17,7 +17,7 @@ class LoginController extends GetxController {
   final _busy = false.obs;
   set busy(value) => _busy.value = value;
   get busy => _busy.value;
-  var driveApi;
+  // var driveApi;
   // @override
   // void onInit() async {
   //
@@ -31,10 +31,12 @@ class LoginController extends GetxController {
       final signIn.GoogleSignInAccount account = await googleSignIn.signIn();
       if (account!=null){
         print("User account $account");
-        final authHeaders = await account.authHeaders;
-        final authenticateClient = GoogleAuthClient(authHeaders);
-        driveApi = drive.DriveApi(authenticateClient);
+        // final authHeaders = await account.authHeaders;
+        // final authenticateClient = GoogleAuthClient(authHeaders);
+        // driveApi = drive.DriveApi(authenticateClient);
         userRepository.login();
+        Get.put(account);
+        // userRepository.saveInformation("account", account);
         Get.offNamed(Routes.HOME);
       }
       else{

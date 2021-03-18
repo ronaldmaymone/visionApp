@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SplashPage extends StatelessWidget {
   /// if you need you can pass the tag for
@@ -26,12 +26,10 @@ class SplashPage extends StatelessWidget {
           ),
           Center(
             child: Container(
-              child: Text("APP LOGO HERE"),
-              // child: Image.asset(
-              //   "assets/images/AraciLabLogo.png",
-              //   alignment: Alignment.center,
-              // ),
-              padding: EdgeInsets.all(100),
+              child: SvgPicture.asset(
+                "assets/images/LogoVision.svg",
+                alignment: Alignment.center,
+              ),
             ),
           ),
         ],

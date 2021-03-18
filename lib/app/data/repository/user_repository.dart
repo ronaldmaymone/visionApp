@@ -11,6 +11,19 @@ class UserRepository {
     return storage.read("isLogged")??false;
   }
 
+  saveInformation(String key, dynamic value){
+    try{
+      storage.write(key, value);
+    }
+    catch(e){
+      print("ERROR SAVING $key: $e");
+    }
+  }
+
+  getInformation(String key){
+    return storage.read(key);
+  }
+
   login(){
     try{
       storage.write("isLogged", true);
@@ -20,12 +33,14 @@ class UserRepository {
     }
   }
 
-  logoff(){
+  bool logoff(){
     try{
       storage.write("isLogged", false);
+      return true;
     }
     catch(e){
       print("ERROR SAVING LOGOFF: $e");
+      return false;
     }
   }
   eraseAllUserInfo(){
