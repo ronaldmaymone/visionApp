@@ -39,7 +39,7 @@ class HomePage extends StatelessWidget {
                   //       betterPlayerPlaylistConfiguration: BetterPlayerPlaylistConfiguration(initialStartIndex: 2,nextVideoDelay: Duration(milliseconds: 500)),
                   //       betterPlayerDataSourceList: _.dataSourceList),
                   // ):
-                  Center(child: loadingWidget());
+                  GetX<HomeController>(builder:(_){ return Center(child: loadingWidget(_));});
               // return _.list != null ? ListView.builder(
               //   itemCount: _.list.files.length,
               //   itemBuilder: (BuildContext context, int index){
@@ -56,13 +56,22 @@ class HomePage extends StatelessWidget {
   }
 }
 
-Widget loadingWidget(){
-  return Column(
+Widget loadingWidget(HomeController _){
+  return _.loadedFromDownload ?  Column(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       CircularProgressIndicator(),
-
-      Text("Verificando vídeos locais e baixando se necessário...")
+      SizedBox(height: 10),
+      Text("Baixando vídeo ${_.currentVideoBeeingDownloaded} de ${_.totalToBeDownloaded}",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0))
+    ],
+  ) :
+  Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      CircularProgressIndicator(),
+      SizedBox(height: 10),
+      Text("Verificando vídeos salvos...",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),)
     ],
   );
+
 }
