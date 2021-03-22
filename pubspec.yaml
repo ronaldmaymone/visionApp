@@ -34,9 +34,10 @@ dependencies:
   googleapis: ^1.0.0
   google_sign_in: ^4.5.9
   flutter_signin_button: ^1.1.0
-  video_player: ^1.0.1
+  #video_player: ^1.0.1
   path_provider: ^1.6.27
   flutter_svg: ^0.19.1
+  better_player: ^0.0.61
 
 dev_dependencies:
   flutter_test:

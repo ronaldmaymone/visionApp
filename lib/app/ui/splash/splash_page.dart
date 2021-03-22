@@ -28,6 +28,8 @@ class SplashPage extends StatelessWidget {
             child: Container(
               child: SvgPicture.asset(
                 "assets/images/LogoVision.svg",
+                height: 100,
+                width: 100,
                 alignment: Alignment.center,
               ),
             ),

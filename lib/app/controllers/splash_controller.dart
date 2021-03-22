@@ -13,7 +13,7 @@ class SplashController extends GetxController {
 
   @override
   void onInit() {
-    Future.delayed(Duration(seconds: 2), chooseNextPage);
+    Future.delayed(Duration(seconds: 3), chooseNextPage);
     super.onInit();
   }
 
