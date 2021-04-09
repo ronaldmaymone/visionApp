@@ -22,12 +22,22 @@ class HomeController extends GetxController {
   // var directory;
   // final directory = "/storage/emulated/0/Android/data/com.example.vision_app/files";
   var directory2;
+  final _totalToBeDownloaded = 0.obs;
+  final _currentVideoBeeingDownloaded = 1.obs;
   int downloadedVideos = 0;
-  bool loadedFromDownload = false;
+  RxBool _loadedFromDownload = false.obs;
 
   VideoPlayerController videoPlayerController;
   var chewieController;
 
+  ///Getters and Setters of obs variables
+  set totalToBeDownloaded(value) => _totalToBeDownloaded.value = value;
+  get totalToBeDownloaded => _totalToBeDownloaded.value;
+  set currentVideoBeeingDownloaded(value) => _currentVideoBeeingDownloaded.value = value;
+  get currentVideoBeeingDownloaded => _currentVideoBeeingDownloaded.value;
+  set loadedFromDownload(value) => _loadedFromDownload.value = value;
+  get loadedFromDownload => _loadedFromDownload.value;
+  ///____________________________________
   HomeController(this.userRepository);
   // final _obj = ''.obs;
   // set obj(value) => _obj.value = value;
@@ -76,10 +86,11 @@ class HomeController extends GetxController {
     final authHeaders = await account.authHeaders;
     final authenticateClient = GoogleAuthClient(authHeaders);
     final driveApi = drive.DriveApi(authenticateClient);
-    // final folderName = 'Legado';
+    final folderName = 'Legado';
     // var client = authenticateClient;
     // var drive = driveApi
-    list = await driveApi.files.list(q: "mimeType contains 'video/' and starred",spaces: 'drive',supportsAllDrives: true);
+    // list = await driveApi.files.list(q: "mimeType contains 'video/' and starred",spaces: 'drive',supportsAllDrives: true);
+    list = await driveApi.files.list(q: "name contains '[APP-Download]'",spaces: 'drive',supportsAllDrives: true);
     // driveApi.files.list(q: "mimeType contains 'video/' and starred",spaces: 'drive',supportsAllDrives: true).then((value) async {
       // list = value;
       // update();
@@ -87,11 +98,12 @@ class HomeController extends GetxController {
     for (dynamic _file in list.files){
       fileNames.add(_file.name);
     }
+
     List listOFFiles = io.Directory("${directory2.path}").listSync();
-    print("LIST OF FILES ON DISK=> ${listOFFiles}");
+    print("LIST OF FILES ON DISK=> $listOFFiles");
     print("LIST OF FILES FROM DRIVE => $fileNames");
     filterFilesAlreadyDownloaded(listOFFiles, fileNames);
-
+    totalToBeDownloaded = fileNames.length;
 
     for (var i = 0; i < fileNames.length; i++) {
       loadedFromDownload = true;
@@ -108,10 +120,11 @@ class HomeController extends GetxController {
           dataStore.insertAll(dataStore.length, data);
         }, onDone: () async {
           downloadedVideos++;
+          currentVideoBeeingDownloaded++;
           print("Task Done");
           // fileNames.add(list.files[i].name);
           await saveFile.writeAsBytes(dataStore);
-          if (downloadedVideos >= list.files.length){
+          if (downloadedVideos >= fileNames.length){
             createController();
           }
           print("File saved at ${saveFile.path}");
