@@ -1,10 +1,11 @@
 import 'dart:io' as io;
 
+import 'package:chewie/chewie.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/io_client.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:better_player/better_player.dart';
+import 'package:video_player/video_player.dart';
 import 'package:vision_app/app/data/repository/user_repository.dart';
 import 'package:vision_app/app/routes/app_pages.dart';
 import 'package:http/http.dart' as http;
@@ -15,16 +16,17 @@ import 'package:google_sign_in/google_sign_in.dart' as signIn;
 class HomeController extends GetxController {
   final UserRepository userRepository;
   drive.FileList list;
-  List<String> fileNames = List();
+  List<String> fileNames = <String>[];
   List dataSourceList;
-  BetterPlayerController betterPlayerController;
+
   // var directory;
   // final directory = "/storage/emulated/0/Android/data/com.example.vision_app/files";
   var directory2;
   int downloadedVideos = 0;
   bool loadedFromDownload = false;
 
-  BetterPlayerController controller;
+  VideoPlayerController videoPlayerController;
+  var chewieController;
 
   HomeController(this.userRepository);
   // final _obj = ''.obs;
@@ -32,6 +34,7 @@ class HomeController extends GetxController {
   // get obj => _obj.value;
   @override
   void onInit() async {
+    await videoPlayerController.initialize();
     directory2 = await getApplicationSupportDirectory();
     // print("APP SUPPORT STORAGE -> ${directory2.path}");
     initialize();
@@ -138,36 +141,43 @@ class HomeController extends GetxController {
   void createController() async {
     print("CREATING CONTROLLER @@@@");
     print("FULL PATH TO THE VIDEO => ${directory2.path}/${list.files[0].name}");
-    // final videoFile = File("$directory/${list.files[i].name}");
-    Future.delayed(Duration(seconds: 3),(){
-      betterPlayerController = BetterPlayerController(
-          BetterPlayerConfiguration(autoPlay: true, fullScreenByDefault: true,looping: true),
-          betterPlayerDataSource: BetterPlayerDataSource(BetterPlayerDataSourceType.file, "${directory2.path}/${list.files[0].name}")
-      );
-      // controller.addListener(checkEnd());
-      update();
-    });
+
+    chewieController = ChewieController(
+      videoPlayerController: videoPlayerController,
+      autoPlay: true,
+      looping: true,
+      fullScreenByDefault: true,
+    );
+    // // final videoFile = File("$directory/${list.files[i].name}");
+    // Future.delayed(Duration(seconds: 3),(){
+    //   betterPlayerController = BetterPlayerController(
+    //       BetterPlayerConfiguration(autoPlay: true, fullScreenByDefault: true,looping: true),
+    //       betterPlayerDataSource: BetterPlayerDataSource(BetterPlayerDataSourceType.file, "${directory2.path}/${list.files[0].name}")
+    //   );
+    //   // controller.addListener(checkEnd());
+    //   update();
+    // });
 
   }
 
   void createDataSet() {
-    print("ADDING to LIST");
-    dataSourceList = List<BetterPlayerDataSource>();
-    for (String videoName in fileNames){
-      dataSourceList.add(
-        BetterPlayerDataSource(
-          BetterPlayerDataSourceType.file,
-          "${directory2.path}/${list.files[1].name}"
-          // "${directory2.toString().replaceAll(RegExp('\''), '')}/$videoName",
-        ),
-      );
-    }
+    // print("ADDING to LIST");
+    // dataSourceList = <BetterPlayerDataSource>[];
+    // for (String videoName in fileNames){
+    //   dataSourceList.add(
+    //     BetterPlayerDataSource(
+    //       BetterPlayerDataSourceType.file,
+    //       "${directory2.path}/${list.files[1].name}"
+    //       // "${directory2.toString().replaceAll(RegExp('\''), '')}/$videoName",
+    //     ),
+    //   );
+    // }
 
     update();
   }
 
   void filterFilesAlreadyDownloaded(List onDisk, List onDrive) {
-    List<String> filesToBeDeleted = List();
+    List<String> filesToBeDeleted = <String>[];
     for (dynamic _path in onDisk){
       for (String fileName in onDrive){
         if(_path.path.toString().contains(fileName)){

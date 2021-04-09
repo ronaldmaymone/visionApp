@@ -1,4 +1,4 @@
-import 'package:better_player/better_player.dart';
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -25,20 +25,19 @@ class HomePage extends StatelessWidget {
         child: GetBuilder<HomeController>(
             builder: (_) {
               print("STARTED GET BUILDER");
-              return _.betterPlayerController != null ?
-                AspectRatio(
-                  aspectRatio: 16 / 9,
-                  child: BetterPlayer(
-                    controller: _.betterPlayerController,
-                  ),
-                ):
-                  // AspectRatio(
-                  //   aspectRatio: 16 / 9,
-                  //   child: BetterPlayerPlaylist(
-                  //       betterPlayerConfiguration: BetterPlayerConfiguration(autoPlay: true, fullScreenByDefault: true,allowedScreenSleep: false,autoDispose: false,deviceOrientationsAfterFullScreen: [DeviceOrientation.landscapeLeft]),
-                  //       betterPlayerPlaylistConfiguration: BetterPlayerPlaylistConfiguration(initialStartIndex: 2,nextVideoDelay: Duration(milliseconds: 500)),
-                  //       betterPlayerDataSourceList: _.dataSourceList),
-                  // ):
+              return _.chewieController != null ?
+                // AspectRatio(
+                //   aspectRatio: 16 / 9,
+                //   child: BetterPlayer(
+                //     controller: _.betterPlayerController,
+                //   ),
+                // ):
+                  AspectRatio(
+                    aspectRatio: 16 / 9,
+                    child: Chewie(
+                      controller: _.chewieController,
+                    ),
+                  ):
                   Center(child: loadingWidget());
               // return _.list != null ? ListView.builder(
               //   itemCount: _.list.files.length,
