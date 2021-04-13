@@ -40,7 +40,7 @@ class LoginController extends GetxController {
         Get.offNamed(Routes.HOME);
       }
       else{
-        Get.snackbar("Erro ao logar!", "Sua conta não retornou. Verifique as permissões concedidas e tente novamente.");
+        Get.snackbar("Erro ao logar!", "Informações não fornecidas. Verifique as permissões concedidas e tente novamente.");
       }
       busy = false;
     }
