@@ -92,9 +92,6 @@ class HomeController extends GetxController {
     // var drive = driveApi
     // list = await driveApi.files.list(q: "mimeType contains 'video/' and starred",spaces: 'drive',supportsAllDrives: true);
     list = await driveApi.files.list(q: "name contains '[APP-Download]'",spaces: 'drive',supportsAllDrives: true);
-    // driveApi.files.list(q: "mimeType contains 'video/' and starred",spaces: 'drive',supportsAllDrives: true).then((value) async {
-      // list = value;
-      // update();
 
     for (dynamic _file in list.files){
       fileNames.add(_file.name);
@@ -142,7 +139,7 @@ class HomeController extends GetxController {
 
 
   initialize() async{
-    setScreenConfigs();
+    await setScreenConfigs();
     await loadFromDrive();
   }
 
@@ -212,7 +209,7 @@ class HomeController extends GetxController {
     }
   }
 
-  void setScreenConfigs() async{
+  Future<void> setScreenConfigs() async{
     await SystemChrome.setEnabledSystemUIOverlays([]);
     await SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeLeft,
