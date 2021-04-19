@@ -28,7 +28,7 @@ class HomePage extends StatelessWidget {
               return _.videoPlayerController != null && _.videoPlayerController.value.isInitialized ?
                 GetX<HomeController>(
                     builder: (_){ print("RELOADED VIDEO WIDGET");return !_.loadingNextVideo ? AspectRatio(
-                      aspectRatio: _.videoPlayerController.value.aspectRatio,
+                      aspectRatio: Get.width/Get.height,
                       child: VideoPlayer(
                         _.videoPlayerController,
                       ),
